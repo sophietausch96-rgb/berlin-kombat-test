@@ -1,0 +1,135 @@
+<!-- /index.html -->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Berlin Kombat</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <audio id="bgm" src="fight-song.mp3" loop preload="auto" playsinline></audio>
+
+  <!-- START -->
+  <section id="screen-start" class="screen active">
+    <div class="start-container">
+      <div class="start-wrapper">
+        <img src="start.png" alt="Startscreen" class="start-image"/>
+        <button id="btn-start" class="btn start-btn">Spiel starten</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOADING -->
+  <section id="screen-loading" class="screen">
+    <div class="loading"><h2>Loading…</h2></div>
+  </section>
+
+  <!-- ARENA -->
+  <section id="screen-arena" class="screen">
+    <header class="mk-header">
+      <h1>Berlin Kombat</h1>
+      <p class="subtitle">Wähle deine Arena</p>
+    </header>
+    <div id="arena-grid" class="grid center"></div>
+    <div class="actions">
+      <button class="btn ghost" id="btn-back-start">Zurück</button>
+      <button id="btn-arena-next" class="btn push-right" disabled>Weiter</button>
+    </div>
+  </section>
+
+  <!-- CHARACTERS -->
+  <section id="screen-characters" class="screen">
+    <header class="mk-header">
+      <h1>Berlin Kombat</h1>
+      <p class="subtitle">Wähle deinen Kämpfer</p>
+    </header>
+    <div id="char-grid" class="grid center"></div>
+    <div class="actions">
+      <button class="btn ghost" id="btn-back-arena">Zurück</button>
+      <button id="btn-char-play" class="btn push-right" disabled>Jetzt spielen</button>
+    </div>
+  </section>
+
+  <!-- FIGHT -->
+  <section id="screen-fight" class="screen">
+    <div class="hud">
+      <div class="stack left">
+        <div class="name" id="p1Name">P1</div>
+        <div class="bar-label">HEALTH</div>
+        <div class="health-bar"><div class="bar" id="p1Health"></div></div>
+        <div class="bar-label">STAMINA</div>
+        <div class="stamina-bar"><div class="bar" id="p1Stamina"></div></div>
+        <div class="wins" id="p1Wins"></div>
+      </div>
+      <div class="centerHud">
+        <div class="roundTag" id="roundTag">ROUND 1</div>
+        <div class="timer" id="timer">60</div>
+      </div>
+      <div class="stack right">
+        <div class="name" id="p2Name">P2</div>
+        <div class="bar-label">HEALTH</div>
+        <div class="health-bar"><div class="bar" id="p2Health"></div></div>
+        <div class="bar-label">STAMINA</div>
+        <div class="stamina-bar"><div class="bar" id="p2Stamina"></div></div>
+        <div class="wins" id="p2Wins"></div>
+      </div>
+    </div>
+
+    <div class="stage-wrap">
+      <canvas id="gameCanvas" width="960" height="540"></canvas>
+      <div id="vfxLayer" class="vfx-layer" aria-hidden="true"></div>
+    </div>
+
+    <div class="fight-actions">
+      <button id="btn-settings" class="btn small">⚙︎ Settings</button>
+      <button id="btn-exit" class="btn small danger">Abbrechen</button>
+    </div>
+  </section>
+
+  <!-- RESULT -->
+  <section id="screen-result" class="screen">
+    <header class="mk-header">
+      <h1>K.O.!</h1>
+      <img id="winnerAvatar" class="winner-avatar" alt="Winner"/>
+      <p id="resultText" class="subtitle"></p>
+    </header>
+    <div class="actions" style="justify-content:center">
+      <button id="btn-restart" class="btn">Neu starten</button>
+    </div>
+  </section>
+
+  <!-- SETTINGS MODAL (echtes Overlay) -->
+  <div id="settingsModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="settingsTitle" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="settingsTitle">Settings</h3>
+        <button id="btn-close-settings" class="icon-btn" aria-label="Schließen">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="settings-row">
+          <label class="switch">
+            <input id="toggle-sound" type="checkbox" checked/>
+            <span class="slider"></span>
+          </label>
+          <span>Sound an/aus</span>
+        </div>
+
+        <h4>Steuerung (P1)</h4>
+        <ul class="controls-list">
+          <li><b>A / D</b> laufen</li>
+          <li><b>W</b> springen · <b>S</b> blocken</li>
+          <li><b>F</b> Schlag · <b>G</b> Kick · <b>H</b> Spezial</li>
+          <li><b>ESC</b> Pause</li>
+        </ul>
+      </div>
+      <div class="modal-foot">
+        <button id="btn-audio" class="btn small">🔊 Musik</button>
+        <button id="btn-done-settings" class="btn small">Fertig</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
