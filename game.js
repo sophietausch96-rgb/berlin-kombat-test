@@ -117,8 +117,14 @@ function startGame(arena,charCfg){
       // World
       this.add.image(W/2,H/2,"arena").setDisplaySize(W,H);
       this.physics.world.setBounds(0,0,W,H);
-      const ground = this.add.rectangle(W/2, FLOOR, W, 10, 0x000000, 0);
-      this.physics.add.existing(ground,true);
+
+      // Statischer Physics-Ground: benutze die 1x1 "px" Textur, setze DisplaySize und Body-Größe explizit
+      const ground = this.physics.add.staticImage(W/2, FLOOR, "px").setDisplaySize(W, 10).setOrigin(0.5, 0.5).setVisible(false);
+      if (ground.body && ground.body.setSize) {
+        ground.body.setSize(ground.displayWidth, ground.displayHeight);
+        // Body-Offset belassen (Phaser richtet bei staticImage mit origin 0.5 gut aus) — kein negativer Offset
+        ground.body.setOffset(0, 0);
+      }
 
       // Fighters
       this.p1 = this.spawnFighter(240, 1, "p1", this.p1cfg);
@@ -183,7 +189,9 @@ function startGame(arena,charCfg){
 
       // physics body size — Offset so einstellen, dass die Hitbox zentriert über dem Sprite sitzt
       // displaySize: 190x190, Hitbox 60x140 -> offsetX = (190 - 60) / 2 = 65, offsetY = 190 - 140 = 50
-      spr.body.setSize(60, 140).setOffset(65, 50);
+      if (spr.body && spr.body.setSize) {
+        spr.body.setSize(60, 140).setOffset(65, 50);
+      }
 
       return spr;
     },
