@@ -1,22 +1,24 @@
-<!-- /index.html -->
+<!-- /index.html — FIX: echte HTML-Struktur, CSS nicht mehr im HTML-Body -->
 <!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Berlin Kombat (Phaser)</title>
+
+  <!-- korrektes CSS-Stylesheet einbinden -->
   <link rel="stylesheet" href="style.css"/>
+
+  <!-- Phaser 3 CDN -->
   <script src="https://cdn.jsdelivr.net/npm/phaser@3.70.0/dist/phaser.min.js"></script>
 </head>
 <body>
-  <!-- Audio jetzt aus assets/ -->
-  <audio id="bgm" src="assets/fight-song.mp3" loop preload="auto" playsinline></audio>
+  <audio id="bgm" src="fight-song.mp3" loop preload="auto" playsinline></audio>
 
   <!-- START -->
   <section id="screen-start" class="screen active" data-screen="start">
     <div class="start-container">
       <div class="start-wrapper">
-        <!-- Wenn du das Startbild verschiebst: src auf assets/start.png ändern -->
         <img src="start.png" alt="Startscreen" class="start-image"/>
         <button id="btn-start" class="btn start-btn">Spiel starten</button>
       </div>
@@ -132,6 +134,7 @@
     </div>
   </div>
 
+  <!-- Spiel-Logik -->
   <script src="game.js"></script>
 </body>
 </html>
