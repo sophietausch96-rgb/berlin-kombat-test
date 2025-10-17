@@ -124,8 +124,9 @@ function startGame(arena,charCfg){
       this.p1 = this.spawnFighter(240, 1, "p1", this.p1cfg);
       this.p2 = this.spawnFighter(720,-1, "p2", this.p2cfg, true);
 
-      this.physics.add.collider(this.p1.body, ground);
-      this.physics.add.collider(this.p2.body, ground);
+      // Korrekte Kollisions-Registrierung: GameObjects (Sprites) mit dem statischen Ground colliden
+      this.physics.add.collider(this.p1, ground);
+      this.physics.add.collider(this.p2, ground);
 
       // Inputs
       this.keys = this.input.keyboard.addKeys({left:"A",right:"D",up:"W",down:"S",J:"F",K:"G",L:"H",ESC:"ESC"});
@@ -180,8 +181,9 @@ function startGame(arena,charCfg){
         if(spr.hp<=0){ spr.state="ko"; spr.setVelocityY(-200); }
       };
 
-      // physics body size
-      spr.body.setSize(60, 140).setOffset(-30, -140);
+      // physics body size — Offset so einstellen, dass die Hitbox zentriert über dem Sprite sitzt
+      // displaySize: 190x190, Hitbox 60x140 -> offsetX = (190 - 60) / 2 = 65, offsetY = 190 - 140 = 50
+      spr.body.setSize(60, 140).setOffset(65, 50);
 
       return spr;
     },
