@@ -68,12 +68,10 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:"Cinzel Decorat
 
 /* Stage */
 .stage-wrap{position:relative;width:92%;max-width:1100px;display:flex;justify-content:center;align-items:center}
-#gameCanvas{border:2px solid var(--border);border-radius:12px;background:#0e0e0e;width:min(96vw,1280px);height:auto}
+#phaserHost{width:min(96vw,1280px)}
+#phaserHost canvas{width:100%;height:auto;border:2px solid var(--border);border-radius:12px;background:#0e0e0e}
 
-/* VFX */
-.vfx-layer{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-
-/* Modal – echtes Overlay */
+/* Modal – Overlay */
 .modal{
   position:fixed; inset:0;
   display:flex; align-items:center; justify-content:center;
@@ -85,6 +83,11 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:"Cinzel Decorat
 .modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
 .modal-body{color:#ddd;text-align:left;display:flex;flex-direction:column;gap:8px}
 .modal-foot{display:flex;gap:10px;justify-content:flex-end;margin-top:12px}
+.controls-list{list-style:none;padding-left:0;margin:6px 0 0 0}
+.controls-list li{margin:2px 0}
+
+/* Result */
+.winner-avatar{width:180px;height:180px;object-fit:contain;margin:14px auto 6px;display:block}
 
 /* Responsive */
 @media (max-width:900px){

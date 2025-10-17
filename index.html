@@ -1,135 +1,97 @@
-<!-- /index.html -->
-<!DOCTYPE html>
-<html lang="de">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Berlin Kombat</title>
-  <link rel="stylesheet" href="style.css"/>
-</head>
-<body>
-  <audio id="bgm" src="fight-song.mp3" loop preload="auto" playsinline></audio>
+/* /style.css */
+@import url("https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap");
 
-  <!-- START -->
-  <section id="screen-start" class="screen active">
-    <div class="start-container">
-      <div class="start-wrapper">
-        <img src="start.png" alt="Startscreen" class="start-image"/>
-        <button id="btn-start" class="btn start-btn">Spiel starten</button>
-      </div>
-    </div>
-  </section>
+:root{
+  --bg:#0a0b0f;--text:#f0f0f0;--gold:#f4c553;--border:#262b3b;
+  --green:#2ad17a;--red:#ff5858;--blue:#4db3ff;--panel:#0f1117;
+}
 
-  <!-- LOADING -->
-  <section id="screen-loading" class="screen">
-    <div class="loading"><h2>Loading…</h2></div>
-  </section>
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Cinzel Decorative",serif;text-align:center}
 
-  <!-- ARENA -->
-  <section id="screen-arena" class="screen">
-    <header class="mk-header">
-      <h1>Berlin Kombat</h1>
-      <p class="subtitle">Wähle deine Arena</p>
-    </header>
-    <div id="arena-grid" class="grid center"></div>
-    <div class="actions">
-      <button class="btn ghost" id="btn-back-start">Zurück</button>
-      <button id="btn-arena-next" class="btn push-right" disabled>Weiter</button>
-    </div>
-  </section>
+/* Screens */
+.screen{display:none;min-height:100dvh;align-items:center;justify-content:center;flex-direction:column;padding:20px}
+.screen.active{display:flex}
 
-  <!-- CHARACTERS -->
-  <section id="screen-characters" class="screen">
-    <header class="mk-header">
-      <h1>Berlin Kombat</h1>
-      <p class="subtitle">Wähle deinen Kämpfer</p>
-    </header>
-    <div id="char-grid" class="grid center"></div>
-    <div class="actions">
-      <button class="btn ghost" id="btn-back-arena">Zurück</button>
-      <button id="btn-char-play" class="btn push-right" disabled>Jetzt spielen</button>
-    </div>
-  </section>
+/* Buttons */
+.btn{background:linear-gradient(180deg,#f4c553,#c8902b);color:#000;padding:12px 22px;border:none;border-radius:10px;cursor:pointer;font-weight:700;min-width:150px}
+.btn.small{padding:8px 14px;min-width:auto}
+.btn.ghost{background:transparent;border:2px solid var(--border);color:#ddd}
+.btn.danger{background:linear-gradient(180deg,#ff6b6b,#b23a3a);color:#fff}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.icon-btn{background:none;border:none;color:#ddd;font-size:1.2rem;cursor:pointer}
 
-  <!-- FIGHT -->
-  <section id="screen-fight" class="screen">
-    <div class="hud">
-      <div class="stack left">
-        <div class="name" id="p1Name">P1</div>
-        <div class="bar-label">HEALTH</div>
-        <div class="health-bar"><div class="bar" id="p1Health"></div></div>
-        <div class="bar-label">STAMINA</div>
-        <div class="stamina-bar"><div class="bar" id="p1Stamina"></div></div>
-        <div class="wins" id="p1Wins"></div>
-      </div>
-      <div class="centerHud">
-        <div class="roundTag" id="roundTag">ROUND 1</div>
-        <div class="timer" id="timer">60</div>
-      </div>
-      <div class="stack right">
-        <div class="name" id="p2Name">P2</div>
-        <div class="bar-label">HEALTH</div>
-        <div class="health-bar"><div class="bar" id="p2Health"></div></div>
-        <div class="bar-label">STAMINA</div>
-        <div class="stamina-bar"><div class="bar" id="p2Stamina"></div></div>
-        <div class="wins" id="p2Wins"></div>
-      </div>
-    </div>
+/* Start */
+.start-container{display:flex;align-items:center;justify-content:center;height:100dvh}
+.start-wrapper{width:min(960px,96vw);aspect-ratio:16/9;position:relative;border:2px solid var(--border);border-radius:12px;overflow:hidden;background:#000}
+.start-image{width:100%;height:100%;object-fit:contain}
+.start-btn{position:absolute;bottom:5%;left:50%;transform:translateX(-50%);padding:16px 32px;font-size:1rem}
 
-    <div class="stage-wrap">
-      <canvas id="gameCanvas" width="960" height="540"></canvas>
-      <div id="vfxLayer" class="vfx-layer" aria-hidden="true"></div>
-    </div>
+/* Header */
+.mk-header{margin-bottom:18px}
+.mk-header h1{margin:0 0 8px 0;font-size:2.2rem;color:var(--gold);letter-spacing:1px}
+.subtitle{margin:0;color:#c9c9c9;font-size:1rem}
 
-    <div class="fight-actions">
-      <button id="btn-settings" class="btn small">⚙︎ Settings</button>
-      <button id="btn-exit" class="btn small danger">Abbrechen</button>
-    </div>
-  </section>
+/* Grid/Cards */
+.grid.center{width:100%;max-width:1100px;display:flex;flex-wrap:wrap;justify-content:center;gap:24px;margin-top:10px}
+.card{width:220px;background:var(--panel);border:2px solid var(--border);border-radius:10px;overflow:hidden;cursor:pointer;transition:transform .08s ease}
+.card:hover{transform:translateY(-2px)}
+.card img.thumb{width:100%;height:160px;object-fit:contain;object-position:center;background:#111;padding:8px;border-bottom:2px solid var(--border);display:block}
+.card.selected{border-color:var(--gold);box-shadow:0 0 18px rgba(244,197,83,.35)}
+.caption{padding:10px;color:#ccc}
+.caption h3{margin:0;font-size:1.05rem}
+.caption .subline{margin-top:4px;font-size:.86rem;color:#a8a8a8}
 
-  <!-- RESULT -->
-  <section id="screen-result" class="screen">
-    <header class="mk-header">
-      <h1>K.O.!</h1>
-      <img id="winnerAvatar" class="winner-avatar" alt="Winner"/>
-      <p id="resultText" class="subtitle"></p>
-    </header>
-    <div class="actions" style="justify-content:center">
-      <button id="btn-restart" class="btn">Neu starten</button>
-    </div>
-  </section>
+/* Actions */
+.actions{display:flex;align-items:center;gap:12px;margin-top:28px;width:92%;max-width:1100px}
+.actions .push-right{margin-left:auto}
 
-  <!-- SETTINGS MODAL (echtes Overlay) -->
-  <div id="settingsModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="settingsTitle" aria-hidden="true">
-    <div class="modal-card">
-      <div class="modal-head">
-        <h3 id="settingsTitle">Settings</h3>
-        <button id="btn-close-settings" class="icon-btn" aria-label="Schließen">✕</button>
-      </div>
-      <div class="modal-body">
-        <div class="settings-row">
-          <label class="switch">
-            <input id="toggle-sound" type="checkbox" checked/>
-            <span class="slider"></span>
-          </label>
-          <span>Sound an/aus</span>
-        </div>
+/* HUD */
+.hud{display:flex;justify-content:space-between;align-items:flex-start;width:92%;max-width:1100px;margin-bottom:10px}
+.stack{width:36%;display:flex;flex-direction:column;gap:6px}
+.stack .name{font-size:1rem;color:#ddd;text-align:left}
+.stack.right .name{text-align:right}
+.bar-label{font-size:.7rem;color:#bfbfbf;text-align:left}
+.stack.right .bar-label{text-align:right}
+.health-bar,.stamina-bar{width:100%;height:18px;background:#1a1a1a;border:2px solid var(--border);border-radius:12px;overflow:hidden;margin:2px 0}
+.health-bar .bar,.stamina-bar .bar{height:100%;width:100%;transition:width .15s}
+.health-bar .bar{background:var(--green)}
+.stack.right .health-bar .bar{background:var(--red)}
+.stamina-bar .bar{background:var(--blue)}
+.wins{height:20px;font-size:.9rem;color:#e7e7e7}
 
-        <h4>Steuerung (P1)</h4>
-        <ul class="controls-list">
-          <li><b>A / D</b> laufen</li>
-          <li><b>W</b> springen · <b>S</b> blocken</li>
-          <li><b>F</b> Schlag · <b>G</b> Kick · <b>H</b> Spezial</li>
-          <li><b>ESC</b> Pause</li>
-        </ul>
-      </div>
-      <div class="modal-foot">
-        <button id="btn-audio" class="btn small">🔊 Musik</button>
-        <button id="btn-done-settings" class="btn small">Fertig</button>
-      </div>
-    </div>
-  </div>
+/* Center HUD */
+.centerHud{display:flex;flex-direction:column;align-items:center;gap:8px;min-width:150px}
+.roundTag{padding:6px 14px;border:2px solid var(--gold);border-radius:999px;color:var(--gold);font-weight:700;letter-spacing:.8px;min-width:120px}
+.timer{font-size:1.8rem;color:#fff}
 
-  <script src="game.js"></script>
-</body>
-</html>
+/* Stage */
+.stage-wrap{position:relative;width:92%;max-width:1100px;display:flex;justify-content:center;align-items:center}
+#phaserHost{width:min(96vw,1280px)}
+#phaserHost canvas{width:100%;height:auto;border:2px solid var(--border);border-radius:12px;background:#0e0e0e}
+
+/* Modal – Overlay */
+.modal{
+  position:fixed; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(0,0,0,.6); backdrop-filter: blur(2px);
+  z-index:9999;
+}
+.modal.hidden{display:none}
+.modal-card{width:min(560px,92vw);background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px 14px 12px}
+.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.modal-body{color:#ddd;text-align:left;display:flex;flex-direction:column;gap:8px}
+.modal-foot{display:flex;gap:10px;justify-content:flex-end;margin-top:12px}
+.controls-list{list-style:none;padding-left:0;margin:6px 0 0 0}
+.controls-list li{margin:2px 0}
+
+/* Result */
+.winner-avatar{width:180px;height:180px;object-fit:contain;margin:14px auto 6px;display:block}
+
+/* Responsive */
+@media (max-width:900px){
+  .hud{flex-direction:column;align-items:center;gap:10px}
+  .stack{width:100%}
+  .stack .name,.stack.right .name,.stack .bar-label,.stack.right .bar-label{text-align:center}
+}
